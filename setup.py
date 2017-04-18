@@ -43,7 +43,7 @@ setup(
 	author = author.name,
 	author_email = author.email,
 	license = 'MIT',
-	keywords = ['template', 'source translation', 'dsl', 'marrow'],
+	keywords = ['template', 'text processing', 'source translation', 'dsl', 'marrow', 'marrow.dsl'],
 	classifiers = [
 			"Development Status :: 5 - Production/Stable",
 			"Intended Audience :: Developers",
@@ -67,16 +67,14 @@ setup(
 	packages = find_packages(exclude=['bench', 'docs', 'example', 'test', 'htmlcov']),
 	include_package_data = True,
 	package_data = {'': ['README.rst', 'LICENSE.txt']},
-	namespace_packages = ['marrow'],
 	zip_safe = True,
 	
+	namespace_packages = [
+			'marrow',
+			'marrow.dsl',
+		],
 	entry_points = {
-			'marrow.dsl': [
-					'string = marrow.dsl.stringy:String',
-				],
-			'marrow.dsl.stringy.processor': [
-					'fstring = marrow.dsl.stringy:FString',  # https://www.python.org/dev/peps/pep-0498/
-				],
+			'marrow.dsl': []
 		},
 	
 	setup_requires = [

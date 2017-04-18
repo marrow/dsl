@@ -1,6 +1,1 @@
-# encoding: utf-8
-
-from .release import version as __version__
-
-
-__all__ = []
+__import__('pkg_resources').declare_namespace(__name__)
