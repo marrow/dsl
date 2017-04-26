@@ -28,3 +28,12 @@ class BlockTransformer(Transformer):
 	
 	def __call__(self, context):
 		raise NotImplementedError()
+	
+	def __getitem__(self, name):
+		return self.buffer[name]
+	
+	def __getattr__(self, name):
+		if name not in self.buffer:
+			raise AttributeError()
+		
+		return self.buffer[name]
