@@ -75,7 +75,7 @@ event) X modifies/alters/changes/transforms/converts Y into Z", and is a fairly 
 mechanism this DSL engine provides, where X is module import, Y is your DSL, and Z is Python code.
 
 Specific engines, such as `cinje <https://github.com/marrow/cinje>`__ and korcu will be released using their literal
-names, though. Lojban root words, or _gismu_ are neat: built from global natural languages, descriptive, and they
+names, though. Lojban root words, or *gismu* are neat: built from global natural languages, descriptive, and they
 scratch the regular expression itch.
 
 
@@ -97,7 +97,7 @@ We find most DSLs (especially template engines) in Python to:
 
 Marrow DSL takes a simpler approach than most by:
 
-1. Treating the domain-specific code fundamentally as lines of input _text_ which can trigger transformations and code
+1. Treating the domain-specific code fundamentally as lines of input *text* which can trigger transformations and code
    generation, reducing lexing/parsing problems to simple string matching and manipulation. This results in a basic DSL
    framework less than a quarter the size of an average template engine, and engines utilizing Marrow DSL a fraction
    of that.
@@ -163,8 +163,8 @@ Domain Specific Languages
 =========================
 
 A Marrow DSL boils down to two things: DSL metadata registration and processing customization, represented as a class
-registered via entry_points under the marrow.dsl namespace, and; one or more transformation classes registered under
-the entry_points namespace for your named DSL which are used to inspect, claim, and transform lines of input.
+registered via ``entry_points`` under the ``marrow.dsl`` namespace, and; one or more transformation classes registered
+under the ``entry_points`` namespace for your named DSL which are used to inspect, claim, and transform lines of input.
 
 The mechanism by which transformation is triggered may be somewhat alien: Python unicode decoding hooks for source
 files, executed when opening the source file, prior to parsing, compilation, byte code storage, and evaluation during
