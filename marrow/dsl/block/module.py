@@ -3,10 +3,11 @@
 from __future__ import unicode_literals
 
 from base64 import b64encode
+from collections import defaultdict as ddict
 from zlib import compress
 
 from ..compat import py2, str
-from ..core import Line, Lines
+from ..core import Line
 from .common import fetch_docstring
 from .interface import BlockTransformer
 
@@ -33,9 +34,9 @@ class ModuleTransformer(BlockTransformer):
 	This is the initial scope, and the highest priority to ensure its processing of the preamble happens first.
 	"""
 	
-	__slots__ = ()
+	__slots__ = ('imports')
 	
-	__buffers__ = ('comment', 'docstring', 'imports', 'prefix', 'module', 'suffix')
+	__buffers__ = ('comment', 'docstring', '_imports', 'prefix', 'module', 'suffix')
 	__buffer_tags__ = {'module'}
 	__buffer_default__ = 'module'
 	
@@ -47,11 +48,12 @@ class ModuleTransformer(BlockTransformer):
 		super(ModuleTransformer, self).__init__(decoder)
 		
 		# Prepare our module-scoped buffers.
-		self.buffer['module'].tag.remove('module')
+		self.module.tag.discard('module')
+		self._imports = ddict(set)
 	
 	@classmethod
 	def match(cls, context, line):
-		return 'init' not in context  # This, in combination with the Very Low(TM) priority, ensure we're first.
+		return 'init' not in context
 	
 	def __call__(self, context):
 		if __debug__:
@@ -59,18 +61,18 @@ class ModuleTransformer(BlockTransformer):
 		
 		buffer = self.buffer
 		context.add('init')
-		context['module'] = self  # Give other transformers access to our (global) scope.
+		context.module = self  # Give other transformers access to our (global) scope.
 		
 		if __debug__:
 			log.debug("Module context prepared:\n\t" + repr(buffer).replace('), ', ')\n\t\t'))
 		
 		for line in context.only('comment', 'blank'):  # Pull out any module comment prefix, e.g. encoding, shbang, etc.
-			buffer['comment'].append(line)
+			buffer.comment.append(line)
 		
 		fetch_docstring(context, buffer['docstring'])
 		
 		for line in context.only('import', 'blank'):
-			buffer['imports'].append(line)
+			buffer.imports.append(line)
 		
 		self.ingress(context)  # Easy subclass hook to perform any additional work just prior to entering the stream.
 		
@@ -84,18 +86,27 @@ class ModuleTransformer(BlockTransformer):
 			log.debug("Module complete:\n\t" + repr(buffer).replace('), ', ')\n\t\t'))
 		
 		# Finally, emit the buffered result.
+		
+		if 'nomap' in context:
+			for line in buffer:
+				yield line
+			return
+		
 		for line in self.emit_with_mapping(buffer):
 			yield line
 	
 	def emit_with_mapping(self, buffer):
-		needs_mapping = False
+		needs_mapping = None if 'nomap' in buffer else False
 		mapping = []
 		
 		for line in buffer:
-			if not needs_mapping and (not line.number or (mapping and mapping[-1] != line.number - 1)):
-				needs_mapping = True
+			if needs_mapping is False:
+				if not needs_mapping and (not line.number or (mapping and mapping[-1] != line.number - 1)):
+					needs_mapping = True
 			
-			mapping.append(line.number if line.number else -1)
+			if needs_mapping is not None:
+				mapping.append(line.number if line.number else -1)
+			
 			yield line
 		
 		if needs_mapping:  # Map line numbers to aid in debugging, but only if lines were added or re-ordered.
@@ -121,5 +132,21 @@ class ModuleTransformer(BlockTransformer):
 		Always call super() last in any subclasses.
 		"""
 		
+		imports = self._imports
+		
 		if py2:  # Add __future__ imports on Python 2 runtimes.
-			self.buffer['imports'].push('from __future__ import ' + ', '.join(sorted(self.FUTURES)), '')
+			imports['__future__'].update(self.FUTURES)
+		
+		if imports:
+			futures = imports.pop('__future__', ())  # Extract these from general processing.
+			
+			# TODO: Split stdlib from third-party, make module ordering style configurable.
+			
+			for package, objs in sorted(imports.items()):
+				if not objs: continue  # Skip queried, but empty packages.
+				self.imports.append('from {} import {}'.format(package, ', '.join(sorted(objs))))
+			
+			self.imports.append('', '')
+			
+			if futures:
+				self.imports.push('from __future__ import ' + ', '.join(sorted(imports.pop('__future__'))), '')
