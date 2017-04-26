@@ -83,8 +83,8 @@ Rationale and Goals
 We find most DSLs (especially template engines) in Python to:
 
 1. Be overly complex, often taking a classical lexer/parser/AST approach to language construction. This can be
-   difficult for developers new to the language to understand or extend, and poses a hurdle to the understanding of
-   the basic principles. Constructing new ways to write code should be easy, not hard.
+   difficult for developers new to the language (or new to programming) to understand or extend, and poses a hurdle to
+   the understanding of the basic principles. Constructing new ways to write code should be easy, not hard.
 
 2. Repeatedly solve the same problems in similar ways that could benefit from deduplication between engines. The needs
    of most engines are similar; these should be fulfilled by a common codebase benefitting many engines.
