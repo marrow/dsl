@@ -57,3 +57,12 @@ class Line(object):
 				scope = kw.get('scope', self.scope),
 				tags = kw['tags'] if 'tags' in kw else set(i for i in self.tag if i[0] != '_'),
 			)
+	
+	def format(self, *args, **kw):
+		"""Perform str.format string interpolation on the line."""
+		
+		if '{' not in self.line:
+			raise ValueError("Not a template line: " + repr(self))
+			return self
+		
+		return self.clone(line=self.line.format(*args, **kw))
