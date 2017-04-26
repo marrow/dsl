@@ -238,9 +238,12 @@ class GalfiDecoder(object):
 		
 		context = self.Context(self, input, self._translators)
 		
-		stream = list(context.stream)
+		if __debug__:
+			stream = list(context.stream)
+			log.debug("Raw Stream:\n\n" + self.decode(stream, True) + "\n")
+			log.debug("Final Code:\n\n" + self.decode(stream, False))
 		
-		return self.decode(stream, True), self.decode(stream, False)
+		return self.decode(stream)
 	
 	def decode(self, stream, r=False):
 		"""Galfi decoders implement a streaming line based generation system.
