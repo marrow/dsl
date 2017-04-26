@@ -65,7 +65,7 @@ What's with the funny names?
 ----------------------------
 
 You might notice the base name of the engine is ``GalfiDecoder`` – this was the original internal project name. Marrow
-projects tend to follow a more... literal... naming scheme, but this legacy remains.  So what in the world is "galfi"?
+projects tend to follow a more... literal... naming scheme, and this legacy remains.  So what in the world is "galfi"?
 
 It's a word from the constructed language `Lojban <http://www.lojban.org/>`_. A combination of Chinese "gǎi", English
 "alter", Hindi "badalanā", Spanish "modificar", Russian "modificirovatʹ", and Arabic "gaiar". It translates as "(an
