@@ -122,8 +122,8 @@ robust as `Vagrant <http://www.vagrantup.com>`__.
 
 If you add ``marrow.dsl`` to the ``install_requires`` argument of the call to ``setup()`` in your application's
 ``setup.py`` file, the engine will be automatically installed and made available when your own application or
-library is installed. You can alternatively make ``marrow.dsl`` an installation-time dependency only by declaring it
-against the ``setup_requires`` argument instead.
+library is installed. You can alternatively make ``marrow.dsl`` a build-time dependency by declaring it against the
+``setup_requires`` argument instead.
 
 We recommend "less than" version number pinning to ensure there are no unintentional side-effects when updating.  Use
 ``marrow.dsl<1.1`` to get all bugfixes for the current release, and ``marrow.dsl<2.0`` to get bugfixes and feature
