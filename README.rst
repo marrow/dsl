@@ -49,7 +49,7 @@ What is this?
 Domain specific languages allow you to write code in ways more optimized to specialized tasks. These can often be
 thought of as interpreters for programming languages other than the one the interpreter is written in, and you may
 already be familiar with a few such as template engines, or testing frameworks. Marrow DSL is a framework for easily
-constructing new ones in Python using a preprocessor methedology performing transformation seamlessly at module import
+constructing new ones in Python using a preprocessor methodology performing transformation seamlessly at module import
 time.
 
 Want to write a really fast template engine of your own? `You can do that. <https://github.com/marrow/cinje>`__
