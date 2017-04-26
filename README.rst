@@ -56,9 +56,10 @@ Want to write a really fast template engine of your own? `You can do that. <http
 
 Want to write a testing framework for story driven development? `Totally possible. <https://gist.github.com/amcgregor/1338661>`__
 
-Want to obfuscate or encrypt your code? We don't recommend it, but yeah, doable.
+Want to obfuscate or encrypt your code? `We don't recommend it <http://s.webcore.io/fVpr/zzinger-best-practices-morpheus.jpg>`__,
+but yeah, doable.
 
-Want to prank your co-workers and turn their Python into Pascal or C? We beg you, please don't do this.
+Want to prank your co-workers and turn their Python into Pascal or C? `We beg you, please don't do this. <http://s.webcore.io/d41m/165595-your-scientists-were-so-preocc-K8Ym.jpeg>__
 
 
 What's with the funny names?
