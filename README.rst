@@ -84,7 +84,8 @@ We find most DSLs (especially template engines) in Python to:
 
 1. Be overly complex, often taking a classical lexer/parser/AST approach to language construction. This can be
    difficult for developers new to the language (or new to programming) to understand or extend, and poses a hurdle to
-   the understanding of the basic principles. Constructing new ways to write code should be easy, not hard.
+   the understanding of the basic principles. Constructing new ways to write code should be easy and accessible, not
+   difficult and opaque wizardry.
 
 2. Repeatedly solve the same problems in similar ways that could benefit from deduplication between engines. The needs
    of most engines are similar; these should be fulfilled by a common codebase benefitting many engines.
@@ -94,9 +95,10 @@ We find most DSLs (especially template engines) in Python to:
 
 Marrow DSL takes a simpler approach than most by:
 
-1. Treating the domain-specific code fundamentally as lines of input _text_ which can trigger transformations,
-   reducing lexing/parsing problems to simple string matching and manipulation. This results in a basic DSL framework
-   less than a quarter the size of an average template engine, and engines utilizing Marrow DSL a fraction of that.
+1. Treating the domain-specific code fundamentally as lines of input _text_ which can trigger transformations and code
+   generation, reducing lexing/parsing problems to simple string matching and manipulation. This results in a basic DSL
+   framework less than a quarter the size of an average template engine, and engines utilizing Marrow DSL a fraction
+   of that.
 
 2. Ensuring transformation is seamless at module import time, allowing full utilization of Python's own internal
    bytecode cache as well as the existing package/module discovery and import mechanisms.
