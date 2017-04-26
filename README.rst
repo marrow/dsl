@@ -71,7 +71,7 @@ projects tend to follow a more... literal... naming scheme, and this legacy rema
 It's a word from the constructed language `Lojban <http://www.lojban.org/>`_. A combination of Chinese "gǎi", English
 "alter", Hindi "badalanā", Spanish "modificar", Russian "modificirovatʹ", and Arabic "gaiar". It translates as "(an
 event) X modifies/alters/changes/transforms/converts Y into Z", and is a fairly literal interpretation for the
-mechanism this DSL engine provides, where X is this package, Y is your DSL, and Z is Python code.
+mechanism this DSL engine provides, where X is module import, Y is your DSL, and Z is Python code.
 
 Specific engines, such as `cinje <https://github.com/marrow/cinje>`__ and korcu will be released using their literal
 names, though. Lojban root words, or _gismu_ are neat: built from global natural languages, descriptive, and they
