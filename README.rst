@@ -90,7 +90,7 @@ We find most DSLs (especially template engines) in Python to:
    of most engines are similar; these should be fulfilled by a common codebase benefitting many engines.
 
 3. Duplicate functionality such as the import pipeline (e.g. to acquire an invokable object to generate templated
-   text) or bytecode caching layer already present in Python, instead of leveraring these built-in tools.
+   text) or bytecode caching layer already present in Python, instead of leveraging these built-in tools.
 
 Marrow DSL takes a simpler approach than most by:
 
