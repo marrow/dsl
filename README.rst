@@ -30,13 +30,14 @@ Contents
    1. `Encoding Naming Scheme`_
    2. `Lines`_
    3. `Buffers`_
-   3. `Context`_
-   4. `Engine Metadata`_
-   5. `Engine Customization`_
-   6. `Transformation`_
-         1. `Block Transformation`_
-         2. `Inline Transformation`_
-         3. `AST Transformation`_
+   4. `Context`_
+   5. `Engine Metadata`_
+   6. `Engine Customization`_
+   7. `Transformation`_
+
+      1. `Block Transformation`_
+      2. `Inline Transformation`_
+      3. `AST Transformation`_
 
 5. `Version History`_
 6. `License`_
