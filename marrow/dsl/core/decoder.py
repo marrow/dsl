@@ -3,9 +3,7 @@
 from __future__ import unicode_literals
 
 from codecs import register
-from operator import methodcaller
 from pkg_resources import iter_entry_points
-from weakref import proxy
 
 from ...package.loader import load
 from ..compat import py2, str
@@ -56,6 +54,7 @@ class GalfiDecoder(object):
 		
 		# Load the individual translators.
 		# TODO: Conditional requirements...
+		# TODO: Override by name...
 		self._translators = [translator.load() for translator in iter_entry_points(self._namespace)]
 		
 		# Load translators from the parent namespace, if a child namespace was given.
@@ -86,7 +85,7 @@ class GalfiDecoder(object):
 				plural = "" if len(unknown) == 1 else "s"
 				
 				raise TypeError("{name} decoder received unknown flag{plural}: {flags}".format(
-						name = name,
+						name = self._name,
 						plural = plural,
 						flags = ", ".join(sorted(unknown))
 					))
@@ -94,19 +93,19 @@ class GalfiDecoder(object):
 			self._flags = flags
 		
 		except AttributeError:
-			raise TypeError(name + " decoder does not support flags.")
+			raise TypeError(self._name + " decoder does not support flags.")
 	
 	def _assign_options(self, options):
 		options.setdefault('ns', None)
 		
 		for k, v in options.items():  # Named key=value pairs.
 			if k[0] == '_':
-				raise TypeError("May not assign options to protected attributes of a " + name + " decoder.")
+				raise TypeError("May not assign options to protected attributes of a " + self._name + " decoder.")
 			
 			try:
 				setattr(self, k, v)  # Assign the attribute.  Use `__slots__` to declare valid attributes.
 			except AttributeError:
-				raise TypeError(name + " decoder does not support the `" + k + "` option.")
+				raise TypeError(self.name + " decoder does not support the `" + k + "` option.")
 		
 		self._options = sorted(options)
 	
