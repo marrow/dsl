@@ -206,16 +206,46 @@ encoding prefixes on source files, the names available are restricted.
 Lines
 -----
 
-* ``Line`` defines the content, context, and metadata for a line of source input or transformed output. This includes
-  such Python metadata as scope (denoted by indentation in the output), buffer membership, classification, or source
-  line number.
+Lines of code, both input written in the DSL and output Python code, are individually represented by ``Line``
+instances. Collections of lines are stored in ``Lines`` instances. At all scales tags are used to help identify
+the lines and collections, represented as sets.
 
-* ``Lines`` represents a contextual buffer. Initially there are two: one representing the entirety of the source input,
-  the other representing the translated output generated so far. As mentioned in the transformation summary below,
-  block transformers may construct additional buffers to collect multiple lines while waiting for an exit condition
-  (e.g. capturing function contents by entering on a ``def`` declaration, exiting on a reduction in scope).
+``Line`` defines the content, original line number, scope, and metadata for a single line.  ``Lines`` represents
 
-Individual DSLs may override the specific Line and Lines implementations in use to further specialize behaviour.
+
+``marrow.dsl.core:Line``
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+The attributes of a line are:
+
+* ``line`` - The string (unicode text) value of the line.
+
+* ``stripped`` - A whitespace stripped (leading and trailing) version of the line.
+
+* ``number`` - The line number this line originated from in the source, or was triggered by for the purpose of code
+  generation.
+
+* ``scope`` - The Python scope, denoted by indentation level in the resulting code. Leading whitespace in a given line
+  already has the scope-based indentation removed. This means indented blocks in docstrings, manually aligned
+  continuations, and other such situations will have their additional whitespace preserved.
+
+* ``tag`` - An optional set of tags to associate with the line. For example, a built-in tag to identify lines that are
+  manually wrapped and "continued" on the next line there is the ``continued`` tag.
+
+Each ``Line`` offers a rich programmers' representation and upon casting to a unicode string will regenerate the line,
+including leading indentation. As most lines are constructed from the mutation of an existing line, or based on a
+triggering line in the case of code generation, two methods are provided to assist:
+
+* ``clone(**kw)`` - Return a new ``Line`` instance as a mutable shallow copy. Any arguments provided will override
+  (replace) the attribute of the same name.
+
+* ``format(*args, **kw)`` - Apply string formatting interpolation (``str.format``)) to the ``line`` attribute, and
+  return a clone of the line with this new value.
+
+
+``marrow.dsl.core:Lines``
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 
 Logical Lines
