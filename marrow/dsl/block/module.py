@@ -140,7 +140,8 @@ class ModuleTransformer(BlockTransformer):
 		if imports:
 			futures = imports.pop('__future__', ())  # Extract these from general processing.
 			
-			# TODO: Split stdlib from third-party, make module ordering style configurable.
+			# TODO: Split stdlib from third-party. Ref: sys.builtin_module_names
+			# TODO: Make module ordering style configurable.
 			
 			for package, objs in sorted(imports.items()):
 				if not objs: continue  # Skip queried, but empty packages.
