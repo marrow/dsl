@@ -2,30 +2,16 @@
 
 from __future__ import unicode_literals
 
-from base64 import b64encode
 from collections import defaultdict as ddict
-from zlib import compress
 
 from ..compat import py2, str
 from ..core import Line
 from .common import fetch_docstring
 from .interface import BlockTransformer
+from .util import redelta_encode
 
 
 log = __import__('logging').getLogger(__name__)
-
-
-def red(numbers):
-	"""Encode the deltas to reduce entropy."""
-	
-	line = 0
-	deltas = []
-	
-	for value in numbers:
-		deltas.append(value - line)
-		line = value
-	
-	return b64encode(compress(b''.join(chr(i+127).encode('latin1') for i in deltas))).decode('latin1')
 
 
 class ModuleTransformer(BlockTransformer):
@@ -112,7 +98,7 @@ class ModuleTransformer(BlockTransformer):
 		if needs_mapping:  # Map line numbers to aid in debugging, but only if lines were added or re-ordered.
 			yield Line("")
 			yield Line("# Line number mappings for translating errors back to the source file.")
-			yield Line('__gzmapping__ = b"' + red(mapping).replace('"', '\"') + '"')
+			yield Line('__gzmapping__ = b"' + redelta_encode(mapping).replace('"', '\"') + '"')
 			
 			# Uncompressed version for readability in development.
 			if __debug__:
